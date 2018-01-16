@@ -28,6 +28,5 @@ lccmatrix = function(df){
     dimnames(cm) = list(X = arrayNames, Y = arrayNames)
     cordf = melt(cm)
   })
-  edit(res)
   return(res)
 }
