@@ -51,8 +51,8 @@ shinyServerRun = function(input, output, session, context) {
         Color = "Main"
       }
       df = data.frame(bndata$getData(outlier=FALSE), group = Color)
-      arrayNames = droplevels(interaction(df[bndata$arrayColumnNames]))
-      df = data.frame(df, arrayNames = arrayNames)
+      arrayNames = apply(df[bndata$arrayColumnNames], 1, paste, collapse = "-")
+      df = data.frame(df, arrayNames = as.factor(arrayNames) )
 
       meta = data.frame(labelDescription = c("rowSeq", "colSeq", "Dummy"),
                         groupingType = c("rowSeq", "colSeq", "QuantitationType"))
