@@ -4,6 +4,7 @@ library(dplyr)
 library(reshape2)
 library(ggplot2)
 library(epiR)
+library(pgscales)
 
 getdata = function() AnnotatedData$new(data=df, metadata=mdf)
 
