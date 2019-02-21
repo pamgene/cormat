@@ -115,7 +115,8 @@ shinyServerShowResults = function(input, output, session, context) {
     ggcormat = reactive({
       cordf = cormat()
       clim = c(input$dispmin, input$dispmax)
-      prt = ggplot(cordf, aes(x = rev(X), y = Y, fill = value, label = round(value,3)) ) + geom_tile()
+
+      prt = ggplot(cordf, aes(x = X, y = reorder(Y, desc(Y)), fill = value, label = round(value,3)) ) + geom_tile()
       prt = prt + scale_fill_gradientn(colours = pgscales::cjet(), limits = clim)
       prt = prt + facet_wrap( ~ group)
       prt = prt + theme(axis.text.y = element_text(size = input$ylabelsize),
@@ -124,6 +125,7 @@ shinyServerShowResults = function(input, output, session, context) {
       if (input$showcor){
         prt = prt + geom_text(colour = "white")
       }
+
       return(prt)
     })
 
