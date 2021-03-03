@@ -88,11 +88,18 @@ shinyServerShowResults = function(input, output, session, context) {
           actionLink("resfolder",label = "Save plot to disk and open results folder")
         ),
         mainPanel(
-          plotOutput("cmat", height = "800px")
+          tabsetPanel(
+            tabPanel("Matrix",
+              plotOutput("cmat", height = "800px")
+            ),
+            tabPanel("Scatter",
+              plotOutput("scp", height = "800px")
+            )
+          )
         )
-      )
     )
-  })
+  )
+})
 
   getFolderReactive = context$getRunFolder()
 
@@ -112,13 +119,19 @@ shinyServerShowResults = function(input, output, session, context) {
       }
     })
 
+    datmat = reactive({
+      X = acast(df, rowSeq ~ colSeq)
+      colnames(X) = acast(df, rowSeq~ colSeq, value.var = "arrayNames")[1,]
+      X = as.matrix(X)
+    })
+
     ggcormat = reactive({
       cordf = cormat()
       clim = c(input$dispmin, input$dispmax)
 
-      prt = ggplot(cordf, aes(x = X, y = reorder(Y, desc(Y)), fill = value, label = round(value,3)) ) + geom_tile()
+      prt = ggplot(cordf, aes(x = as.factor(X), y = reorder(as.factor(Y), desc(as.factor(Y) ) ), fill = value, label = round(value,3)) ) + geom_tile()
       prt = prt + scale_fill_gradientn(colours = pgscales::cjet(), limits = clim)
-      prt = prt + facet_wrap( ~ group)
+      prt = prt + facet_wrap( ~ group, scales = "free")
       prt = prt + theme(axis.text.y = element_text(size = input$ylabelsize),
                         axis.text.x = element_text(size = input$xlabelsize, angle = 90))
       prt = prt + xlab("") + ylab("") + ggtitle(paste(input$cortype, "correlation coeficient"))
@@ -127,6 +140,11 @@ shinyServerShowResults = function(input, output, session, context) {
       }
 
       return(prt)
+    })
+
+    output$scp = renderPlot({
+      X = datmat()
+      pairs(X, diag.panel=panel.hist , lower.panel=panel.lm, upper.panel=panel.cor)
     })
 
     output$cmat = renderPlot({

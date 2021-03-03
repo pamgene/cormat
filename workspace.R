@@ -6,8 +6,10 @@ library(ggplot2)
 library(epiR)
 library(pgscales)
 
-getdata = function() AnnotatedData$new(data=df, metadata=mdf)
-
+getdata = function(){
+  testdf = df #%>% filter(colSeq <= 5)
+  AnnotatedData$new(data=testdf, metadata=mdf)
+}
 getRunfolder = function() file.path(getwd(), 'run')
 
 setResult = function(annotatedResult){

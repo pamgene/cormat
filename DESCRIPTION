@@ -1,11 +1,11 @@
 Package: cormat
 Type: Package
 Title: Shiny Correlation Matrix Plot
-Version: 1.4
+Version: 1.6
 Author: Rik de Wijn
-Date: 20-02-2018
+Date: 27-02-2018
 Description: Interactive tool for making correlation matrix plots using Pearsons or Lin-CCC correlation 
 Encoding: UTF-8
 LazyData: true
 Imports: bnutil, shiny, dplyr, reshape2, ggplot2, epiR, pgscales 
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1
